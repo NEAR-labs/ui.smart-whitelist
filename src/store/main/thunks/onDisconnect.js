@@ -1,0 +1,13 @@
+import { thunk } from 'easy-peasy';
+import { routes } from '../../../config/routes';
+import { getNearApi } from '../helpers/getNearApi';
+
+export const onDisconnect = thunk(async (_, history, { getStoreActions }) => {
+  const actions = getStoreActions();
+  const resetState = actions.resetState;
+  const setNearApi = actions.main.setNearApi;
+  localStorage.clear();
+  resetState();
+  history.replace(routes.connectWallet);
+  setNearApi(await getNearApi());
+});
