@@ -1,9 +1,8 @@
 import qs from 'query-string';
 
 export const routes = {
-  root: '/',
+  home: '/',
   connectWallet: '/connect-wallet',
-  session: '/session',
   createApplicant: '/create-applicant',
   verifyAccount: '/verify-account',
   redirectFromWallet: '/redirect-from-wallet',

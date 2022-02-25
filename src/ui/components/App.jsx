@@ -5,13 +5,14 @@ import { routes } from '../../config/routes';
 import VerifyAccount from './VerifyAccount/VerifyAccount';
 import Header from './Header/Header';
 import CreateApplicant from './CreateApplicant/CreateApplicant';
+import Home from './Home/Home';
 
 const App = () => {
   return (
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/" element={<ConnectWallet />} />
+        <Route path="/" element={<Home />} />
         <Route path={routes.connectWallet} element={<ConnectWallet />} />
         <Route path={routes.createApplicant} element={<CreateApplicant />} />
         <Route path={routes.verifyAccount} element={<VerifyAccount />} />

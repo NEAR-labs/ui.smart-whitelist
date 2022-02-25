@@ -3,12 +3,12 @@ import { onConnectWallet } from './onConnectWallet';
 import { onDisconnect } from './onDisconnect';
 import { onVerifyAccount } from './onVerifyAccount';
 import { onRegisterSession } from './onRegisterSession';
-import { onRegisterApplicant } from './onRegisterApplicant';
+import { onRegisterContract } from './onRegisterContract';
 
 export const thunks = {
   initApp,
   onConnectWallet,
-  onRegisterApplicant,
+  onRegisterContract,
   onRegisterSession,
   onVerifyAccount,
   onDisconnect,

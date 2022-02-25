@@ -1,9 +1,11 @@
-import { getKeyPair } from './getKeyPair';
+import bs58 from 'bs58';
 
-export const getSignature = async (state) => {
-  const wallet = state.main.entities.wallet;
-  const accountId = wallet.getAccountId();
-  const keyPair = await getKeyPair(state);
-  const msg = Buffer.from(accountId);
-  return keyPair.sign(msg);
+function toED25519(key) {
+  return `${bs58.encode(Buffer.from(key))}`;
+}
+
+export const getSignature = async (keyPair, token) => {
+  const msg = Buffer.from(token);
+  const { signature } = keyPair.sign(msg);
+  return toED25519(signature);
 };

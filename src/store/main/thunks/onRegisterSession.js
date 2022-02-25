@@ -1,9 +1,16 @@
 import { thunk } from 'easy-peasy';
+import { getSession } from './onInitApp/session/getSession';
+import { getSessionStatus } from '../helpers/getSessionStatus';
+import { getKeyPair } from '../helpers/getKeyPair';
 import { getSignature } from '../helpers/getSignature';
-import { api } from '../../../config/api';
-import { registerSession } from './onInitApp/session/registerSession';
 
 export const onRegisterSession = thunk(async (actions, history, { getStoreState }) => {
   const state = getStoreState();
-  await registerSession({ state, actions, history });
+  const wallet = state.main.entities.wallet;
+  const account_id = wallet.getAccountId();
+  const keyPair = await getKeyPair(state);
+  const sessionStatus = state.main.session.status;
+  const signature = await getSignature(keyPair, account_id);
+  await getSession(state, actions, history, signature, account_id);
+  history.replace(getSessionStatus[sessionStatus]);
 });

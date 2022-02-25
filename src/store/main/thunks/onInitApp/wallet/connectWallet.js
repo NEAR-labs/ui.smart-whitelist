@@ -1,10 +1,7 @@
 import { routes } from '../../../../../config/routes';
-import { getDataBeforeRenderPage } from '../../../helpers/getDataBeforeRenderPage';
 
 const onSuccess = async (state, actions, history, query) => {
-  await getDataBeforeRenderPage({ state, actions, history, withLoading: false });
-
-  const destination = routes.createApplicant;
+  const destination = routes.home;
   history.replace(destination);
 };
 

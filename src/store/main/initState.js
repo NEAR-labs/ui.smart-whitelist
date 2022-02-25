@@ -12,6 +12,10 @@ const initState = {
     keyStore: null,
     wallet: null,
   },
+  session: {
+    session_token: null,
+    status: null,
+  },
   temporary: {},
   navigation: { page: redirectPages.connectWallet },
 };

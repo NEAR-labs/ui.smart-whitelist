@@ -13,6 +13,6 @@ export const main = persist(
   },
   {
     storage: 'localStorage',
-    allow: ['onfido', 'temporary'],
+    allow: ['session', 'onfido', 'temporary'],
   },
 );

@@ -1,14 +1,14 @@
 import { matchPath } from 'react-router';
 import { routes } from '../../../../config/routes';
 
-const { root, connectWallet, createApplicant, verifyAccount } = routes;
+const { home, connectWallet, createApplicant } = routes;
 
 const rootHandler = ({ replace, state }) => {
   console.log('rootHandler');
   const { wallet } = state.main.entities;
   const { onfido } = state.main;
   if (!wallet.isSignedIn()) return replace(connectWallet);
-  if (wallet.isSignedIn() && !onfido.applicants.isExist) return replace(createApplicant);
+  if (wallet.isSignedIn() && !onfido.applicants.isExist) return replace(home);
 };
 
 const connectWalletHandler = ({ replace, state }) => {
@@ -16,7 +16,7 @@ const connectWalletHandler = ({ replace, state }) => {
   const { wallet } = state.main.entities;
   const { onfido } = state.main;
   if (!wallet.isSignedIn()) return replace(connectWallet);
-  if (wallet.isSignedIn() && !onfido.applicants.isExist) return replace(createApplicant);
+  if (wallet.isSignedIn()) return replace(home);
 };
 
 const createApplicantHandler = ({ replace, state }) => {
@@ -24,11 +24,11 @@ const createApplicantHandler = ({ replace, state }) => {
   const { wallet } = state.main.entities;
   const { onfido } = state.main;
   if (!wallet.isSignedIn()) return replace(connectWallet);
-  if (wallet.isSignedIn() && !onfido.applicants.isExist) return replace(createApplicant);
+  if (wallet.isSignedIn()) return replace(home);
 };
 
 const handlers = {
-  [root]: rootHandler,
+  [home]: rootHandler,
   [connectWallet]: connectWalletHandler,
   [createApplicant]: createApplicantHandler,
 };

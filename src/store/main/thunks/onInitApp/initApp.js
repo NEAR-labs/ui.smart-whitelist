@@ -25,7 +25,7 @@ export const initApp = thunk(async (actions, payload, helpers) => {
       await navigateTo(state, history);
     }
 
-    // await getDataBeforeRenderPage({ state, actions, history, withLoading: false });
+    await getDataBeforeRenderPage({ state, actions, history, withLoading: false });
 
     setInit(true);
   } catch (e) {

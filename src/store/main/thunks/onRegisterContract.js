@@ -1,15 +1,14 @@
 import { thunk } from 'easy-peasy';
 import { getUserContract } from '../helpers/getContracts';
 import { Buffer } from 'buffer';
-import { redirectPages } from '../../../config/redirectPages';
 import { nearConfig } from '../../../config/nearConfig';
 import { getKeyPair } from '../helpers/getKeyPair';
-import { registerApplicant } from './onInitApp/applicant/registerApplicant';
-import { removeApplicant } from './onInitApp/applicant/removeApplicant';
+import { registerContract } from './onInitApp/contract/registerContract';
+import { removeContract } from './onInitApp/contract/removeContract';
 
 const { contractName, networkId } = nearConfig;
 
-export const onRegisterApplicant = thunk(async (_, history, { getStoreState, getStoreActions }) => {
+export const onRegisterContract = thunk(async (_, history, { getStoreState, getStoreActions }) => {
   global.Buffer = Buffer;
   const state = getStoreState();
   const actions = getStoreActions();
@@ -27,10 +26,10 @@ export const onRegisterApplicant = thunk(async (_, history, { getStoreState, get
     const isMatch = public_key === applicantPk;
 
     if (!applicantPk) {
-      await registerApplicant({ state, actions, history, contract });
+      await registerContract({ state, actions, history, contract });
     } else {
       if (!isMatch) {
-        await removeApplicant({ state, actions, history, contract });
+        await removeContract({ state, actions, history, contract });
       }
     }
   } catch (e) {

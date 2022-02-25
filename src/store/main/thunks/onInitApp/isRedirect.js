@@ -5,8 +5,6 @@ import { routes } from '../../../../config/routes';
 export const isRedirect = (state, history) => {
   const { redirectAction } = qs.parse(history.location.search);
 
-  console.log(state.main.temporary.redirectAction, redirectAction);
-
   const match = matchPath(
     {
       path: routes.redirectFromWallet,
@@ -14,6 +12,8 @@ export const isRedirect = (state, history) => {
     },
     history.location.pathname,
   );
+
+  console.log(redirectAction, state.main.temporary.redirectAction);
 
   return (
     typeof redirectAction === 'string' &&
