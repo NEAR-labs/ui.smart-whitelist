@@ -1,14 +1,15 @@
 import { api } from '../../../../../config/api';
 import { routes } from '../../../../../config/routes';
 import { getSessionStatus } from '../../../helpers/getSessionStatus';
+import { setSessionActions } from './setSessionActions';
 
 const { home } = routes;
 
 const onSuccess = async (actions, history, response) => {
-  const destination = getSessionStatus[response.status];
+  const sessionToken = response.status;
   const setSession = actions.setSession;
   setSession(response);
-  history.replace(destination);
+  await setSessionActions(actions, history, sessionToken);
 };
 
 const onError = ({ actions, history }) => {
@@ -16,15 +17,14 @@ const onError = ({ actions, history }) => {
     session_token: null,
     status: null,
   });
-  console.log(history);
   history.replace(home);
 };
 
-export const getSession = async (state, actions, history, signature, account_id) => {
+export const loadSession = async (actions, history, signature, account_id) => {
   try {
     const response = await api.registerSession(account_id, signature);
     if (response) await onSuccess(actions, history, response);
   } catch (e) {
-    onError({ state, actions, history, e });
+    onError({ actions, history });
   }
 };

@@ -1,7 +1,7 @@
 import { thunk } from 'easy-peasy';
 import { getNearApi } from '../../helpers/getNearApi';
 import { checkUserAccounts } from './checkUserAccounts';
-import { isRedirect } from './isRedirect';
+import { isRedirectFromWallet } from './isRedirectFromWallet';
 import { redirectFromWallet } from './wallet/redirectFromWallet';
 import { navigateTo } from './navigateTo';
 import { getDataBeforeRenderPage } from '../../helpers/getDataBeforeRenderPage';
@@ -19,7 +19,7 @@ export const initApp = thunk(async (actions, payload, helpers) => {
 
     await checkUserAccounts(state, actions, history);
 
-    if (isRedirect(state, history)) {
+    if (isRedirectFromWallet(state, history)) {
       await redirectFromWallet(state, actions, history);
     } else {
       await navigateTo(state, history);

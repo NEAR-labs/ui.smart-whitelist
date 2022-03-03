@@ -5,17 +5,19 @@ import { useStoreActions } from 'easy-peasy';
 import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
-const CreateApplicant = () => {
+const CreateApplicant = ({ history }) => {
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('First Name is required'),
-    second_name: Yup.string().required('Second name is required'),
+    first_name: Yup.string().required('First Name is required'),
+    last_name: Yup.string().required('Last name is required'),
+    dob: Yup.string().required('Birthday is required'),
     email: Yup.string().required('Email is required').email('Email is invalid'),
   });
 
   const formOptions = { resolver: yupResolver(validationSchema) };
 
-  const onVerifyAccount = useStoreActions((actions) => actions.main.onVerifyAccount);
+  const onCreateApplicant = useStoreActions((actions) => actions.main.onCreateApplicant);
 
   const {
     register,
@@ -24,14 +26,11 @@ const CreateApplicant = () => {
     formState: { errors },
   } = useForm(formOptions);
 
-  const onSubmit = (data) => verifyAccount(data);
+  const onSubmit = (data) => createApplicantHandler(data);
 
-  const verifyAccount = (data) => {
-    onVerifyAccount(data);
-  };
-
-  const handleClick = (e) => {
-    console.log(e);
+  const createApplicantHandler = (data) => {
+    console.log(history);
+    // onCreateApplicant({ history, data });
   };
 
   const useStyles = makeStyles(() => ({
@@ -118,28 +117,49 @@ const CreateApplicant = () => {
               fullWidth
               className={classes.input}
               InputProps={{ disableUnderline: true }}
-              {...register('name')}
+              {...register('first_name')}
             />
             <ErrorMessage
               errors={errors}
-              name="name"
+              name="first_name"
               as={<span className="error-message" style={{ color: 'red' }} />}
             />
           </Box>
           <Box className={classes.inputGroup}>
             <TextField
               required
-              id="filled-secondname"
+              id="filled-lastname"
               fullWidth
-              label="Second name"
+              label="Last name"
               variant="filled"
               InputProps={{ disableUnderline: true }}
               className={classes.input}
-              {...register('second_name')}
+              {...register('last_name')}
             />
             <ErrorMessage
               errors={errors}
-              name="second_name"
+              name="last_name"
+              as={<span className="error-message" style={{ color: 'red' }} />}
+            />
+          </Box>
+          <Box className={classes.inputGroup}>
+            <TextField
+              id="birthday"
+              label="Birthday"
+              type="date"
+              format={'YYYY-MM-DD HH:mm:SS'}
+              variant="filled"
+              className={classes.input}
+              InputProps={{ disableUnderline: true }}
+              fullWidth
+              {...register('dob')}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="dob"
               as={<span className="error-message" style={{ color: 'red' }} />}
             />
           </Box>

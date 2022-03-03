@@ -16,6 +16,9 @@ const initState = {
     session_token: null,
     status: null,
   },
+  onfido: {
+    sdk_token: null,
+  },
   temporary: {},
   navigation: { page: redirectPages.connectWallet },
 };

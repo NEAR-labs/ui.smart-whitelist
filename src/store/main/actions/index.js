@@ -6,6 +6,7 @@ import { resetError } from './resetError';
 import { setTemporaryData } from './setTemporaryData';
 import { clearTemporaryData } from './clearTemporaryData';
 import { setSession } from './setSession';
+import { setSdkToken } from './setSdkToken';
 
 export const actions = {
   setNearApi,
@@ -16,4 +17,5 @@ export const actions = {
   setError,
   resetError,
   setSession,
+  setSdkToken,
 };

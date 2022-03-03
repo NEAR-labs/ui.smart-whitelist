@@ -6,7 +6,7 @@ import { getKeyPair } from '../helpers/getKeyPair';
 import { registerContract } from './onInitApp/contract/registerContract';
 import { removeContract } from './onInitApp/contract/removeContract';
 
-const { contractName, networkId } = nearConfig;
+const { contractName } = nearConfig;
 
 export const onRegisterContract = thunk(async (_, history, { getStoreState, getStoreActions }) => {
   global.Buffer = Buffer;

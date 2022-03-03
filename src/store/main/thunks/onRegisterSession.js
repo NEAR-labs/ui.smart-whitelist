@@ -1,16 +1,24 @@
 import { thunk } from 'easy-peasy';
-import { getSession } from './onInitApp/session/getSession';
-import { getSessionStatus } from '../helpers/getSessionStatus';
+import { loadSession } from './onInitApp/session/loadSession';
 import { getKeyPair } from '../helpers/getKeyPair';
 import { getSignature } from '../helpers/getSignature';
+import { setSessionActions } from './onInitApp/session/setSessionActions';
 
-export const onRegisterSession = thunk(async (actions, history, { getStoreState }) => {
+export const onRegisterSession = thunk(async (_, history, { getStoreState, getStoreActions }) => {
   const state = getStoreState();
-  const wallet = state.main.entities.wallet;
-  const account_id = wallet.getAccountId();
-  const keyPair = await getKeyPair(state);
+  const actions = getStoreActions();
+  const session_token = state.main.session.session_token;
   const sessionStatus = state.main.session.status;
-  const signature = await getSignature(keyPair, account_id);
-  await getSession(state, actions, history, signature, account_id);
-  history.replace(getSessionStatus[sessionStatus]);
+  try {
+    if (!session_token) {
+      const wallet = state.main.entities.wallet;
+      const account_id = wallet.getAccountId();
+      const keyPair = await getKeyPair(state);
+      const signature = await getSignature(keyPair, account_id);
+      await loadSession(actions.main, history, signature, account_id);
+    }
+    await setSessionActions(actions.main, history, sessionStatus);
+  } catch (e) {
+    console.log(e);
+  }
 });

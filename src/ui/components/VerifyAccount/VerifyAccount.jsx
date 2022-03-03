@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as OnfidoSDK from 'onfido-sdk-ui/dist/onfido.min.js';
 import 'onfido-sdk-ui/dist/style.css';
 import { makeStyles } from '@mui/styles';
+import { useStoreState } from 'easy-peasy';
 
 const VerifyAccount = () => {
-  const onfidoToken = 'onfido-jwt';
+  const onfidoToken = useStoreState((state) => state.main.onfido.sdk_token);
   const onfidoContainerId = 'onfido-sdk-wrapper';
 
   const useStyles = makeStyles((theme) => ({

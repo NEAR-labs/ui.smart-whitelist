@@ -25,7 +25,7 @@ render(
       <ThemeProvider theme={theme}>
         <Initializer history={history} store={store}>
           <Router>
-            <App />
+            <App history={history} />
           </Router>
         </Initializer>
       </ThemeProvider>
