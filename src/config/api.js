@@ -43,8 +43,18 @@ const generateSDKToken = (account_id, signature) => {
     .json();
 };
 
+const createCheck = (account_id, signature) => {
+  return ky
+    .post(url.createCheck, {
+      json: { account_id, signature },
+      timeout: parseInt(TIME_OUT),
+    })
+    .json();
+};
+
 export const api = {
   registerSession: registerSession,
   registerApplicant: registerApplicant,
   generateSDKToken: generateSDKToken,
+  createCheck: createCheck,
 };

@@ -1,19 +1,17 @@
 import { api } from '../../../../../config/api';
 import { routes } from '../../../../../config/routes';
-import { getSessionStatus } from '../../../helpers/getSessionStatus';
 import { setSessionActions } from './setSessionActions';
-
 const { home } = routes;
 
 const onSuccess = async (actions, history, response) => {
-  const sessionToken = response.status;
-  const setSession = actions.setSession;
+  const sessionStatus = response.status;
+  const setSession = actions.main.setSession;
   setSession(response);
-  await setSessionActions(actions, history, sessionToken);
+  await setSessionActions(actions, history, sessionStatus);
 };
 
 const onError = ({ actions, history }) => {
-  actions.setSession({
+  actions.main.setSession({
     session_token: null,
     status: null,
   });

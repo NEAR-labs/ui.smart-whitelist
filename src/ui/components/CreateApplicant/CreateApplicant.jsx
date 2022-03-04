@@ -5,9 +5,14 @@ import { useStoreActions } from 'easy-peasy';
 import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useState } from 'react';
+import history from 'history/browser';
+import moment from 'moment';
 
-const CreateApplicant = ({ history }) => {
+const CreateApplicant = () => {
+  const [loading, setLoading] = useState(false);
+
   const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First Name is required'),
     last_name: Yup.string().required('Last name is required'),
@@ -22,15 +27,17 @@ const CreateApplicant = ({ history }) => {
   const {
     register,
     handleSubmit,
-    watch,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm(formOptions);
 
-  const onSubmit = (data) => createApplicantHandler(data);
+  const onSubmit = (data) => submitButtonHandler(data);
 
-  const createApplicantHandler = (data) => {
-    console.log(history);
-    // onCreateApplicant({ history, data });
+  const submitButtonHandler = (data) => {
+    setLoading(true);
+    data.dob = moment(data.dob).format('YYYY.MM.DD HH:ss:mm');
+    onCreateApplicant({ history, data });
   };
 
   const useStyles = makeStyles(() => ({
@@ -147,7 +154,6 @@ const CreateApplicant = ({ history }) => {
               id="birthday"
               label="Birthday"
               type="date"
-              format={'YYYY-MM-DD HH:mm:SS'}
               variant="filled"
               className={classes.input}
               InputProps={{ disableUnderline: true }}
@@ -182,7 +188,8 @@ const CreateApplicant = ({ history }) => {
             />
           </Box>
           <Box className={classes.formFooter}>
-            <Button
+            <LoadingButton
+              loading={loading}
               className={classes.button}
               color="primary"
               variant="contained"
@@ -190,7 +197,7 @@ const CreateApplicant = ({ history }) => {
               disableElevation
             >
               Verify
-            </Button>
+            </LoadingButton>
           </Box>
         </Box>
       </Box>

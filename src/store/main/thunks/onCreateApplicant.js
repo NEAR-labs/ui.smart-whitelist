@@ -10,7 +10,6 @@ const { home } = routes;
 export const onCreateApplicant = thunk(async (_, payload, { getStoreState, getStoreActions }) => {
   global.Buffer = Buffer;
   const { history, data } = payload;
-  console.log('payload', payload);
   const state = getStoreState();
   const actions = getStoreActions();
   const wallet = state.main.entities.wallet;
@@ -22,7 +21,11 @@ export const onCreateApplicant = thunk(async (_, payload, { getStoreState, getSt
     await api.registerApplicant({ data, account_id, signature });
     history.replace(home);
   } catch (e) {
-    console.log(e);
+    actions.main.setSession({
+      session_token: null,
+      status: null,
+    });
+    history.replace(home);
     //actions.main.setError({ description: e.message });
   }
 });

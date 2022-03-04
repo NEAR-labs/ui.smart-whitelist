@@ -14,7 +14,7 @@ const initState = {
   },
   session: {
     session_token: null,
-    status: null,
+    status: 'verification_in_progress',
   },
   onfido: {
     sdk_token: null,
