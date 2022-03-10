@@ -1,7 +1,7 @@
 import { matchPath } from 'react-router';
 import { routes } from '../../../../config/routes';
 
-const { home, connectWallet, createApplicant, verifyAccount } = routes;
+const { home, connectWallet, createApplicant, verifyAccount, createProposal } = routes;
 
 const rootHandler = ({ replace, state }) => {
   console.log('rootHandler');
@@ -28,7 +28,16 @@ const verifyAccountHandler = ({ replace, state }) => {
   console.log('verifyAccountHandler');
   const { wallet } = state.main.entities;
   if (!wallet.isSignedIn()) return replace(connectWallet);
-  return replace(verifyAccount);
+  return replace(home);
+};
+
+const createProposalHandler = ({ replace, state }) => {
+  console.log('createProposalHandler');
+  const { wallet } = state.main.entities;
+  const isWhiteListed = state.main.session.status === 'account_is_whitelisted';
+  if (!wallet.isSignedIn()) return replace(connectWallet);
+  if (!isWhiteListed) return replace(home);
+  return replace(createProposal);
 };
 
 const handlers = {
@@ -36,6 +45,7 @@ const handlers = {
   [connectWallet]: connectWalletHandler,
   [createApplicant]: createApplicantHandler,
   [verifyAccount]: verifyAccountHandler,
+  [createProposal]: createProposalHandler,
 };
 
 export const navigateTo = async (state, history) => {

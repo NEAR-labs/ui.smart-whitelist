@@ -7,6 +7,7 @@ import { setTemporaryData } from './setTemporaryData';
 import { clearTemporaryData } from './clearTemporaryData';
 import { setSession } from './setSession';
 import { setSdkToken } from './setSdkToken';
+import { setApplicant } from './setApplicant';
 
 export const actions = {
   setNearApi,

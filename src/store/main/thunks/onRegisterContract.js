@@ -22,6 +22,9 @@ export const onRegisterContract = thunk(async (_, history, { getStoreState, getS
     const applicantPk = await contract.get_applicant_pk({
       applicant_account_id: accountId,
     });
+    const isWhitelisted = await contract.is_whitelisted({ account_id: accountId });
+
+    if (isWhitelisted) return;
 
     const isMatch = public_key === applicantPk;
 

@@ -1,4 +1,7 @@
 import ky from 'ky';
+import { getKeyPair } from '../store/main/helpers/getKeyPair';
+import { getSignature } from '../store/main/helpers/getSignature';
+import { useStoreState } from 'easy-peasy';
 
 const BACKEND = process.env.REACT_APP_BACKEND;
 const TIME_OUT = process.env.REACT_APP_REQUEST_TIMEOUT || 10000;
@@ -12,6 +15,13 @@ const url = {
 
 const headers = {
   'content-type': 'application/json',
+};
+
+const UseSignature = async (state) => {
+  const session_token = state.main.session.session_token;
+  const keyPair = await getKeyPair(state);
+  const signature = await getSignature(keyPair, session_token);
+  return signature;
 };
 
 const registerSession = (account_id, signature) => {
@@ -34,7 +44,8 @@ const registerApplicant = ({ data, account_id, signature }) => {
     .json();
 };
 
-const generateSDKToken = (account_id, signature) => {
+const generateSDKToken = async (state, account_id) => {
+  const signature = await UseSignature(state);
   return ky
     .post(url.generateSDKToken, {
       json: { account_id, signature },
@@ -43,7 +54,7 @@ const generateSDKToken = (account_id, signature) => {
     .json();
 };
 
-const createCheck = (account_id, signature) => {
+const createCheck = async (account_id, signature) => {
   return ky
     .post(url.createCheck, {
       json: { account_id, signature },

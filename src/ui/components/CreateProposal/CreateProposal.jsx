@@ -8,16 +8,20 @@ import * as Yup from 'yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useState } from 'react';
 import moment from 'moment';
-import { countries } from 'country-list-json';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import Divider from '@mui/material/Divider';
 
-const CreateApplicant = () => {
+const CreateProposal = ({ history }) => {
   const [loading, setLoading] = useState(false);
-  console.log(countries);
+
   const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First Name is required'),
-    last_name: Yup.string().required('Last name is required'),
-    dob: Yup.string().required('Birthday is required'),
-    email: Yup.string().required('Email is required').email('Email is invalid'),
   });
 
   const formOptions = { resolver: yupResolver(validationSchema) };
@@ -27,6 +31,8 @@ const CreateApplicant = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm(formOptions);
 
@@ -34,8 +40,9 @@ const CreateApplicant = () => {
 
   const submitButtonHandler = (data) => {
     setLoading(true);
-    data.dob = moment(data.dob).format('YYYY.MM.DD HH:ss:mm');
-    onCreateApplicant({ data });
+    console.log(data);
+    //    data.dob = moment(data.dob).format('YYYY.MM.DD HH:ss:mm');
+    //    onCreateApplicant({ history, data });
   };
 
   const useStyles = makeStyles(() => ({
@@ -50,12 +57,14 @@ const CreateApplicant = () => {
     },
     wrapper: {
       display: 'flex',
+      width: '100%',
       paddingLeft: 40,
       paddingRight: 40,
     },
     form: {
       display: 'flex',
       flexDirection: 'column',
+      width: '100%',
     },
     formHeader: {
       display: 'flex',
@@ -76,6 +85,9 @@ const CreateApplicant = () => {
     inputGroup: {
       marginBottom: '24px !important',
       textAlign: 'left',
+    },
+    formGroup: {
+      flexDirection: 'row !important',
     },
     input: {
       '& .MuiFilledInput-root': {
@@ -107,10 +119,7 @@ const CreateApplicant = () => {
         <Box className={classes.form}>
           <Box className={classes.formHeader}>
             <Typography className={classes.formTitle} variant="h6">
-              Verify your account
-            </Typography>
-            <Typography variant="body2" className={classes.formDescription}>
-              Before ypu start, please prepare you identity document and make sure it is valid.
+              Proposal
             </Typography>
           </Box>
           <Box className={classes.inputGroup}>
@@ -131,59 +140,17 @@ const CreateApplicant = () => {
             />
           </Box>
           <Box className={classes.inputGroup}>
-            <TextField
-              required
-              id="filled-lastname"
-              fullWidth
-              label="Last name"
-              variant="filled"
-              InputProps={{ disableUnderline: true }}
-              className={classes.input}
-              {...register('last_name')}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="last_name"
-              as={<span className="error-message" style={{ color: 'red' }} />}
-            />
+            <FormGroup row>
+              <FormControlLabel control={<Checkbox {...register('vat')} />} label="Include VAT" />
+              <Tooltip title="VAT" placement="right-start">
+                <IconButton>
+                  <InfoIcon />
+                </IconButton>
+              </Tooltip>
+            </FormGroup>
           </Box>
           <Box className={classes.inputGroup}>
-            <TextField
-              id="birthday"
-              label="Birthday"
-              type="date"
-              variant="filled"
-              className={classes.input}
-              InputProps={{ disableUnderline: true }}
-              fullWidth
-              {...register('dob')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="dob"
-              as={<span className="error-message" style={{ color: 'red' }} />}
-            />
-          </Box>
-          <Box className={classes.inputGroup}>
-            <TextField
-              required
-              id="filled-email"
-              fullWidth
-              type="email"
-              label="Email"
-              variant="filled"
-              InputProps={{ disableUnderline: true }}
-              className={classes.input}
-              {...register('email')}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="email"
-              as={<span className="error-message" style={{ color: 'red' }} />}
-            />
+            <Divider textAlign="left">Addres details</Divider>
           </Box>
           <Box className={classes.formFooter}>
             <LoadingButton
@@ -194,7 +161,7 @@ const CreateApplicant = () => {
               onClick={handleSubmit(onSubmit)}
               disableElevation
             >
-              Verify
+              Submit
             </LoadingButton>
           </Box>
         </Box>
@@ -203,4 +170,4 @@ const CreateApplicant = () => {
   );
 };
 
-export default CreateApplicant;
+export default CreateProposal;

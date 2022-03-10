@@ -15,6 +15,10 @@ const onError = ({ actions, history }) => {
     session_token: null,
     status: null,
   });
+  actions.main.setError({
+    isError: true,
+    description: 'Session is not registered',
+  });
   history.replace(home);
 };
 

@@ -5,6 +5,7 @@ export const routes = {
   connectWallet: '/connect-wallet',
   createApplicant: '/create-applicant',
   verifyAccount: '/verify-account',
+  createProposal: '/create-proposal',
   redirectFromWallet: '/redirect-from-wallet',
 };
 

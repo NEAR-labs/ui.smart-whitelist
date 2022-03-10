@@ -1,12 +1,12 @@
 import { routes } from '../../../../../config/routes';
 
-const { main } = routes;
+const { home } = routes;
 
 const onError = (actions, history) => {
   actions.main.setError({
     description: 'Applicant was not registered',
   });
-  history.replace(main);
+  history.replace(home);
 };
 
 export const registerContract = async ({ actions, history, contract }) => {

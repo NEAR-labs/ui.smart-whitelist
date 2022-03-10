@@ -3,7 +3,7 @@ import { routes } from '../../../config/routes';
 
 const { home } = routes;
 
-export const getDataBeforeRenderPage = async ({ actions, history, withLoading }) => {
+export const getDataBeforeRenderPage = async ({ actions, history }) => {
   const onRegisterSession = actions.onRegisterSession;
   const onRegisterContract = actions.onRegisterContract;
 

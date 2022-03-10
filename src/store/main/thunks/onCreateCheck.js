@@ -15,7 +15,7 @@ export const onCreateCheck = thunk(async (_, history, { getStoreState, getStoreA
   const signature = await getSignature(keyPair, sessionToken);
   try {
     await api.createCheck(account_id, signature);
-    history.replace(home);
+    window.location.reload();
   } catch (e) {
     console.log(e);
   }

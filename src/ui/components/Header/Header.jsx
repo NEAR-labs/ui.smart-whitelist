@@ -17,6 +17,9 @@ const Header = () => {
       backgroundColor: '#fff !important',
       color: '#000 !important',
     },
+    toolbar: {
+      borderBottom: '1px solid #ccc',
+    },
     account: {
       fontWeight: '700 !important',
       textAlign: 'left',
@@ -69,7 +72,7 @@ const Header = () => {
       {accountId && (
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static" elevation={0} className={classes.header}>
-            <Toolbar>
+            <Toolbar className={classes.toolbar}>
               <Typography
                 variant="h6"
                 component="div"
