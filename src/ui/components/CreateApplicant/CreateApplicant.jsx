@@ -1,24 +1,41 @@
-import { Box, Typography, TextField } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useForm } from 'react-hook-form';
 import { useStoreActions } from 'easy-peasy';
-import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
-import { countries } from 'country-list-json';
+import Divider from '@mui/material/Divider';
+import { api } from '../../../config/api';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Input from '../general/Input/Input';
 
 const CreateApplicant = () => {
   const [loading, setLoading] = useState(false);
-  console.log(countries);
+  const [countries, setCountries] = useState([]);
+  const [country, setCountry] = useState('');
+
   const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First Name is required'),
     last_name: Yup.string().required('Last name is required'),
     dob: Yup.string().required('Birthday is required'),
     email: Yup.string().required('Email is required').email('Email is invalid'),
   });
+
+  useEffect(async () => {
+    const response = await api.getCountries();
+    if (response.length > 0) {
+      const supportedIdentityReport = response.filter(
+        (item) => item.supported_identity_report === true,
+      );
+      setCountries(supportedIdentityReport);
+    }
+  }, []);
 
   const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -34,26 +51,27 @@ const CreateApplicant = () => {
 
   const submitButtonHandler = (data) => {
     setLoading(true);
-    data.dob = moment(data.dob).format('YYYY.MM.DD HH:ss:mm');
-    onCreateApplicant({ data });
+    console.log(data);
+    //  data.dob = moment(data.dob).format('YYYY.MM.DD HH:ss:mm');
+    //  onCreateApplicant({ data });
   };
 
   const useStyles = makeStyles(() => ({
     container: {
-      width: '100%',
-      maxWidth: 560,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      margin: '0 auto',
+      backgroundColor: '#F2F2F2',
     },
     wrapper: {
       display: 'flex',
       paddingLeft: 40,
       paddingRight: 40,
+      backgroundColor: '#fff',
     },
     form: {
+      maxWidth: 500,
       display: 'flex',
       flexDirection: 'column',
     },
@@ -76,16 +94,13 @@ const CreateApplicant = () => {
     inputGroup: {
       marginBottom: '24px !important',
       textAlign: 'left',
+      '& .MuiDivider-root::before': {
+        width: '0 !important',
+      },
     },
-    input: {
+    select: {
       '& .MuiFilledInput-root': {
         borderRadius: 4,
-        '& input': {
-          paddingTop: 16,
-          paddingRight: 36,
-          paddingBottom: 14,
-          paddingLeft: 14,
-        },
       },
     },
     formFooter: {
@@ -99,6 +114,10 @@ const CreateApplicant = () => {
     },
   }));
 
+  const handleChangeCity = (event) => {
+    setCountry(event.target.value);
+  };
+
   const classes = useStyles();
 
   return (
@@ -110,80 +129,81 @@ const CreateApplicant = () => {
               Verify your account
             </Typography>
             <Typography variant="body2" className={classes.formDescription}>
-              Before ypu start, please prepare you identity document and make sure it is valid.
+              Before you start, please prepare you identity document and make sure it is valid.
             </Typography>
           </Box>
           <Box className={classes.inputGroup}>
-            <TextField
-              required
-              id="filled-name"
-              label="Name"
-              variant="filled"
-              fullWidth
-              className={classes.input}
-              InputProps={{ disableUnderline: true }}
-              {...register('first_name')}
-            />
-            <ErrorMessage
+            <Input
+              label={'Name'}
+              register={register}
+              name={'first_name'}
+              type={'text'}
               errors={errors}
-              name="first_name"
-              as={<span className="error-message" style={{ color: 'red' }} />}
             />
           </Box>
           <Box className={classes.inputGroup}>
-            <TextField
-              required
-              id="filled-lastname"
-              fullWidth
-              label="Last name"
-              variant="filled"
-              InputProps={{ disableUnderline: true }}
-              className={classes.input}
-              {...register('last_name')}
-            />
-            <ErrorMessage
+            <Input label={'Last name'} register={register} name={'last_name'} errors={errors} />
+          </Box>
+          <Box className={classes.inputGroup}>
+            <Input
+              label={'Birthday'}
+              register={register}
+              name={'dob'}
+              type={'date'}
               errors={errors}
-              name="last_name"
-              as={<span className="error-message" style={{ color: 'red' }} />}
             />
           </Box>
           <Box className={classes.inputGroup}>
-            <TextField
-              id="birthday"
-              label="Birthday"
-              type="date"
-              variant="filled"
-              className={classes.input}
-              InputProps={{ disableUnderline: true }}
-              fullWidth
-              {...register('dob')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <ErrorMessage
+            <Input
+              label={'Email'}
+              register={register}
+              name={'email'}
+              type={'email'}
               errors={errors}
-              name="dob"
-              as={<span className="error-message" style={{ color: 'red' }} />}
             />
           </Box>
           <Box className={classes.inputGroup}>
-            <TextField
-              required
-              id="filled-email"
-              fullWidth
-              type="email"
-              label="Email"
-              variant="filled"
-              InputProps={{ disableUnderline: true }}
-              className={classes.input}
-              {...register('email')}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="email"
-              as={<span className="error-message" style={{ color: 'red' }} />}
-            />
+            <Divider textAlign="left">Addres details</Divider>
+          </Box>
+          <Box className={classes.inputGroup}>
+            <FormControl fullWidth variant="filled" className={classes.select}>
+              <InputLabel id="select-country-label" style={{ fontSize: 14 }}>
+                Country
+              </InputLabel>
+              <Select
+                labelId="select-country-label"
+                id="select-country"
+                value={country}
+                label="Country"
+                disableUnderline
+                {...register('address.country')}
+                onChange={handleChangeCity}
+              >
+                {countries.map((country) => (
+                  <MenuItem key={country.name} value={country.alpha3}>
+                    {country.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <Box className={classes.inputGroup}>
+            <Input label={'City'} register={register} name={'address.town'} />
+          </Box>
+          <Box className={classes.inputGroup} display="flex" flexDirection="row">
+            <Box sx={{ mr: 0.5, width: '40%' }}>
+              <Input label={'Street'} register={register} name={'address.street'} />
+            </Box>
+            <Box sx={{ ml: 0.5, mr: 0.5, width: '25%' }}>
+              <Input
+                label={'Building number'}
+                register={register}
+                name={'address.building_number'}
+              />
+            </Box>
+            <Box sx={{ ml: 0.5, width: '35%' }}>
+              <Input label={'Zip/Postal code'} register={register} name={'address.postcode'} />
+            </Box>
           </Box>
           <Box className={classes.formFooter}>
             <LoadingButton

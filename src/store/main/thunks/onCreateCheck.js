@@ -8,6 +8,7 @@ const { home } = routes;
 
 export const onCreateCheck = thunk(async (_, history, { getStoreState, getStoreActions }) => {
   const state = getStoreState();
+  const actions = getStoreActions();
   const wallet = state.main.entities.wallet;
   const account_id = wallet.getAccountId();
   const sessionToken = state.main.session.session_token;
@@ -18,5 +19,9 @@ export const onCreateCheck = thunk(async (_, history, { getStoreState, getStoreA
     window.location.reload();
   } catch (e) {
     console.log(e);
+    actions.main.setError({
+      isError: true,
+      description: 'Check error...',
+    });
   }
 });

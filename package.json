@@ -15,7 +15,6 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "buffer": "^6.0.3",
-    "country-list-json": "^1.0.7",
     "easy-peasy": "^5.0.4",
     "history": "^5.2.0",
     "ky": "^0.28.7",

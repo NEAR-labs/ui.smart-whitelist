@@ -12,30 +12,25 @@ export const onRegisterContract = thunk(async (_, history, { getStoreState, getS
   global.Buffer = Buffer;
   const state = getStoreState();
   const actions = getStoreActions();
+  const wallet = state.main.entities.wallet;
+  const accountId = wallet.getAccountId();
+  const keyPair = await getKeyPair(state);
+  const public_key = keyPair.getPublicKey().toString();
+  const contract = getUserContract(wallet, contractName);
+  const applicantPk = await contract.get_applicant_pk({
+    applicant_account_id: accountId,
+  });
+  const isWhitelisted = await contract.is_whitelisted({ account_id: accountId });
 
-  try {
-    const wallet = state.main.entities.wallet;
-    const accountId = wallet.getAccountId();
-    const keyPair = await getKeyPair(state);
-    const public_key = keyPair.getPublicKey().toString();
-    const contract = getUserContract(wallet, contractName);
-    const applicantPk = await contract.get_applicant_pk({
-      applicant_account_id: accountId,
-    });
-    const isWhitelisted = await contract.is_whitelisted({ account_id: accountId });
+  if (isWhitelisted) return;
 
-    if (isWhitelisted) return;
+  const isMatch = public_key === applicantPk;
 
-    const isMatch = public_key === applicantPk;
-
-    if (!applicantPk) {
-      await registerContract({ state, actions, history, contract });
-    } else {
-      if (!isMatch) {
-        await removeContract({ state, actions, history, contract });
-      }
+  if (!applicantPk) {
+    await registerContract({ state, actions, history, contract });
+  } else {
+    if (!isMatch) {
+      await removeContract({ state, actions, history, contract });
     }
-  } catch (e) {
-    actions.main.setError({ description: e.message });
   }
 });

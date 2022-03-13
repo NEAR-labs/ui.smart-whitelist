@@ -10,6 +10,9 @@ const onError = (actions, history) => {
 };
 
 export const registerContract = async ({ actions, history, contract }) => {
-  const key = await contract.register_applicant();
-  if (!key) onError(actions, history);
+  try {
+    await contract.register_applicant();
+  } catch (e) {
+    onError(actions, history);
+  }
 };

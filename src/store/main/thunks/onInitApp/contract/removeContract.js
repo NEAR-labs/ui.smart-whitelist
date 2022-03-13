@@ -13,7 +13,10 @@ const onError = (actions, history) => {
 };
 
 export const removeContract = async ({ state, actions, history, contract }) => {
-  const key = await contract.remove_applicant();
-  if (key) await onSuccess(state, actions, history, contract);
-  if (!key) onError(actions, history);
+  try {
+    await contract.remove_applicant();
+    await onSuccess(state, actions, history, contract);
+  } catch (e) {
+    onError(actions, history);
+  }
 };

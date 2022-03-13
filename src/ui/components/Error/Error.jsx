@@ -1,20 +1,18 @@
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { makeStyles } from '@mui/styles';
 import { Paper, Button } from '@mui/material';
-import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 export const Error = () => {
   const isError = useStoreState((store) => store.main.error.isError);
   const description = useStoreState((store) => store.main.error.description);
-  const removeError = useStoreActions((actions) => actions.main.removeError);
+  const resetError = useStoreActions((actions) => actions.main.resetError);
 
   const useStyles = makeStyles(() => ({
-    root: {
-      height: 'calc(100% - 65px)',
+    modal: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#fafafa',
     },
     container: {
       width: 360,
@@ -40,16 +38,21 @@ export const Error = () => {
   if (!isError) return null;
 
   return (
-    <Box className={classes.root}>
-      <Paper className={classes.container} elevation={0}>
+    <Modal
+      className={classes.modal}
+      open={isError}
+      onClose={resetError}
+      BackdropProps={{ invisible: true }}
+    >
+      <Paper className={classes.container} elevation={5}>
         <h2 className={classes.header}>Something went wrong ...</h2>
         <p>{description}</p>
-        {/*        <div className={classes.footer}>
-          <Button color="primary" className={classes.button} onClick={removeError}>
+        <div className={classes.footer}>
+          <Button color="primary" className={classes.button} onClick={resetError}>
             Got It
           </Button>
-        </div>*/}
+        </div>
       </Paper>
-    </Box>
+    </Modal>
   );
 };

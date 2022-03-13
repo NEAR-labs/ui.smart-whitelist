@@ -6,7 +6,6 @@ import { routes } from '../../../config/routes';
 const { home, verifyAccount } = routes;
 
 export const onGenerateSDKToken = thunk(async (_, history, { getStoreState, getStoreActions }) => {
-  console.log('onGenerateSDKToken');
   global.Buffer = Buffer;
   const state = getStoreState();
   const actions = getStoreActions();

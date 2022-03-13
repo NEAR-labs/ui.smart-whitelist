@@ -54,6 +54,10 @@ const generateSDKToken = async (state, account_id) => {
     .json();
 };
 
+const getCountries = async () => {
+  return ky.get('https://documentation.onfido.com/supported-applicant-countries.json').json();
+};
+
 const createCheck = async (account_id, signature) => {
   return ky
     .post(url.createCheck, {
@@ -68,4 +72,5 @@ export const api = {
   registerApplicant: registerApplicant,
   generateSDKToken: generateSDKToken,
   createCheck: createCheck,
+  getCountries: getCountries,
 };
