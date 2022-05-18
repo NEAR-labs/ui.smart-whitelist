@@ -11,6 +11,6 @@ export const main = persist(
   },
   {
     storage: 'localStorage',
-    allow: ['session', 'onfido', 'temporary', 'error'],
+    allow: ['session', 'onfido', 'temporary'],
   },
 );

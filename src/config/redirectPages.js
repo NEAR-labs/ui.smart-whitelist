@@ -1,3 +1,3 @@
 export const redirectPages = {
-  connectWallet: 'connect-wallet',
+  verifyAccount: 'verify-account',
 };

@@ -11,6 +11,7 @@ const url = {
   registerApplicant: `${BACKEND}/register-applicant`,
   generateSDKToken: `${BACKEND}/generate-sdk-token`,
   createCheck: `${BACKEND}/create-check`,
+  loadCountries: `${BACKEND}/supported-applicant-countries`,
 };
 
 const headers = {
@@ -35,10 +36,10 @@ const registerSession = (account_id, signature) => {
 };
 
 const registerApplicant = ({ data, account_id, signature }) => {
-  const { first_name, last_name, dob, email } = data;
+  const { first_name, last_name, dob, email, address } = data;
   return ky
     .post(url.registerApplicant, {
-      json: { first_name, last_name, dob, email, account_id, signature },
+      json: { first_name, last_name, dob, email, account_id, address, signature },
       timeout: parseInt(TIME_OUT),
     })
     .json();
@@ -55,7 +56,7 @@ const generateSDKToken = async (state, account_id) => {
 };
 
 const getCountries = async () => {
-  return ky.get('https://documentation.onfido.com/supported-applicant-countries.json').json();
+  return ky.get(url.loadCountries).json();
 };
 
 const createCheck = async (account_id, signature) => {

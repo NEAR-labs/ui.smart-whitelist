@@ -1,10 +1,11 @@
-import { cloneElement, useEffect, useState } from 'react';
+import React, { cloneElement, useEffect } from 'react';
 import Loader from '../../components/general/Loader/Loader';
+import { useState } from 'react';
 
 export const Initializer = ({ store, history, children }) => {
   const [isInit, setInit] = useState(false);
   const actions = store.getActions();
-  const onInitApp = actions.main.initApp;
+  const onInitApp = actions.main.onInitApp;
 
   useEffect(() => {
     (async () => {
