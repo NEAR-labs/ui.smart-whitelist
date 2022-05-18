@@ -10,7 +10,7 @@ export const onConnectWallet = thunk(async (actions, _, helpers) => {
   global.Buffer = Buffer;
   const store = helpers.getStoreState();
   const wallet = store.main.entities.wallet;
-  const redirectAction = redirectPages.connectWallet;
+  const redirectAction = redirectPages.verifyAccount;
 
   actions.setTemporaryData({ redirectAction });
 

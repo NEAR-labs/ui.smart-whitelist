@@ -15,6 +15,7 @@ const initState = {
   session: {
     session_token: null,
     status: null,
+    isRejected: false,
   },
   onfido: {
     sdk_token: null,

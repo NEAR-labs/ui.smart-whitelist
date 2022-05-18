@@ -1,17 +1,18 @@
 import { makeStyles } from '@mui/styles';
 
-const styles = {
+const styles = (theme) => ({
   input: {
     '& .MuiFilledInput-root': {
-      borderRadius: 4,
+      borderRadius: 12,
+      borderBottom: 0,
       '& input': {
-        paddingTop: 16,
-        paddingRight: 36,
-        paddingBottom: 14,
-        paddingLeft: 14,
+        paddingTop: theme.spacing(2),
+        paddingRight: theme.spacing(4),
+        paddingBottom: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
       },
     },
   },
-};
+});
 
 export const useStyles = makeStyles(styles, { name: 'Input' });

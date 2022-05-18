@@ -1,30 +1,31 @@
-import { Box, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { useStyles } from './Input.styles';
 import { ErrorMessage } from '@hookform/error-message';
 
-const Input = ({ type = 'text', register, name, label, errors }) => {
+const Input = (props) => {
   const classes = useStyles();
   return (
     <>
       <TextField
         className={classes.input}
         required
-        id={`filled-${name}`}
+        id={`filled-${props.name}`}
         fullWidth
-        type={type}
-        label={label}
+        inputRef={props.inputRef || null}
+        type={props.type}
+        label={props.label}
         variant="filled"
         InputProps={{ disableUnderline: true }}
         InputLabelProps={{
           shrink: true,
           style: { fontSize: 14 },
         }}
-        {...register(name)}
+        {...props.register(props.name)}
       />
-      {errors && (
+      {props.errors && (
         <ErrorMessage
-          errors={errors}
-          name={name}
+          errors={props.errors}
+          name={props.name}
           as={<span className="error-message" style={{ color: 'red' }} />}
         />
       )}

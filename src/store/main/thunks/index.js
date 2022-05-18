@@ -1,4 +1,4 @@
-import { initApp } from './onInitApp/initApp';
+import { onInitApp } from './onInitApp';
 import { onConnectWallet } from './onConnectWallet';
 import { onDisconnect } from './onDisconnect';
 import { onCreateApplicant } from './onCreateApplicant';
@@ -8,7 +8,7 @@ import { onGenerateSDKToken } from './onGenerateSDKToken';
 import { onCreateCheck } from './onCreateCheck';
 
 export const thunks = {
-  initApp,
+  onInitApp,
   onConnectWallet,
   onRegisterContract,
   onRegisterSession,
